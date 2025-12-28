@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.edu.scnu.customer.mapper.CustomerMapper">
+	<select id="queryEmail" parameterType="String" resultType="int">
+		select count(email) from Customer where email=#{email};
+	</select>
+	
+	<insert id="saveCustomer" parameterType="Customer">
+		insert into Customer(password,customer_name,email,phone,type)
+		values(#{password},#{customerName},#{email},#{phone},#{type});
+	</insert>
+	
+	<select id="queryUserByEmailAndPassword" parameterType="Customer" resultType="Customer">
+		select * from Customer where email=#{email} and password=#{password};
+	</select>
+	
+	<insert id="saveLog" parameterType="UserLog">
+		insert into UserLog(customer_id,LogInfo)
+		values(#{customerId},#{LogInfo});
+	</insert>
+	
+	<select id="queryCustomerLogJson" parameterType="Integer" resultType="UserLog">
+		select * from UserLog where customer_id=#{customerId} order by log_id desc limit 8;
+	</select>
+	
+	<update id="updateCustomerInfo" parameterType="Customer">
+		update Customer set customer_name=#{customerName},email=#{email},phone=#{phone} where customer_id=#{customerId};
+	</update>
+	
+	<update id="updatePassword">
+	update Customer set password=#{password} where customer_id=#{customerId};
+	</update>
+	
+</mapper>
